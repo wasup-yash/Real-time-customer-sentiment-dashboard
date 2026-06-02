@@ -9,11 +9,10 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.cache_store = :memory_store
 
-  config.active_mailer.raise_delivery_errors = false
-  config.active_mailer.perform_caching = false
-
   config.active_job.queue_adapter = :async
 
+  config.assets.configure do |env|
+    env.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+  end
   config.assets.quiet = true
 end
-

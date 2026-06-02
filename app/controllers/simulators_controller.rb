@@ -1,4 +1,4 @@
-class SimulatorController < ApplicationController
+class SimulatorsController < ApplicationController
   def start
     token = SecureRandom.hex(12)
     Rails.cache.write("review_simulator_token", token)

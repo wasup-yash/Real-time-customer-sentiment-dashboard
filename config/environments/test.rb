@@ -10,7 +10,5 @@ Rails.application.configure do
   config.cache_store = :null_store
   config.action_dispatch.show_exceptions = :rescuable
   config.action_controller.allow_forgery_protection = false
-  config.active_mailer.perform_caching = false
   config.active_job.queue_adapter = :test
 end
-

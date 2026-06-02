@@ -7,6 +7,8 @@
 /node_modules
 /vendor/bundle
 /.bundle
+/.bundle_home
+/.bundle_cache
+/.gem_home
 /db/*.sqlite3
 /db/*.sqlite3-*
-
