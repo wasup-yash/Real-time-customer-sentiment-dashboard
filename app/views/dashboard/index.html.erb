@@ -1,0 +1,85 @@
+<%= turbo_stream_from "reviews" %>
+<%= turbo_stream_from "metrics" %>
+<%= turbo_stream_from "alerts" %>
+
+<main class="dashboard-shell">
+  <section class="topbar">
+    <div>
+      <p class="eyebrow">Live operations</p>
+      <h1>Customer sentiment dashboard</h1>
+    </div>
+
+    <div class="stream-actions" data-controller="stream-controls">
+      <%= button_to "Start stream", start_simulator_path, method: :post, class: "button button-primary", data: { action: "stream-controls#started" } %>
+      <%= button_to "Stop", stop_simulator_path, method: :post, class: "button button-secondary", data: { action: "stream-controls#stopped" } %>
+    </div>
+  </section>
+
+  <%= render "reviews/metrics", summary: @summary %>
+
+  <section class="workbench">
+    <div class="feed-panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Review feed</p>
+          <h2>Incoming messages</h2>
+        </div>
+        <span class="live-pill">Live</span>
+      </div>
+
+      <div id="reviews" class="review-list">
+        <% if @reviews.any? %>
+          <%= render @reviews %>
+        <% else %>
+          <%= render "reviews/empty_state" %>
+        <% end %>
+      </div>
+    </div>
+
+    <aside class="side-panel">
+      <div class="panel-block">
+        <div class="panel-header compact">
+          <div>
+            <p class="eyebrow">Negative emotion flags</p>
+            <h2>Attention queue</h2>
+          </div>
+        </div>
+
+        <div id="alerts" class="alert-list">
+          <% Review.flagged.recent.limit(5).each do |review| %>
+            <%= render "reviews/alert", review: review %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <div class="panel-header compact">
+          <div>
+            <p class="eyebrow">Manual ingest</p>
+            <h2>Analyze review</h2>
+          </div>
+        </div>
+
+        <%= form_with model: @review, url: reviews_path, class: "review-form", data: { controller: "stream-controls", action: "turbo:submit-end->stream-controls#resetForm" } do |form| %>
+          <div class="field-row">
+            <%= form.label :author %>
+            <%= form.text_field :author, placeholder: "Customer name", maxlength: 60 %>
+          </div>
+
+          <div class="field-row">
+            <%= form.label :rating %>
+            <%= form.number_field :rating, min: 1, max: 5, placeholder: "1-5" %>
+          </div>
+
+          <div class="field-row">
+            <%= form.label :body, "Review" %>
+            <%= form.text_area :body, rows: 5, required: true, maxlength: 1200, placeholder: "Paste a customer review..." %>
+          </div>
+
+          <%= form.submit "Analyze", class: "button button-primary full-width" %>
+        <% end %>
+      </div>
+    </aside>
+  </section>
+</main>
+

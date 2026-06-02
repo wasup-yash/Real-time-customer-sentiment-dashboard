@@ -1,0 +1,27 @@
+<section id="metrics" class="metric-grid">
+  <div class="metric-tile">
+    <span>Total reviews</span>
+    <strong><%= summary.fetch(:total) %></strong>
+  </div>
+
+  <div class="metric-tile danger">
+    <span>Flagged</span>
+    <strong><%= summary.fetch(:flagged) %></strong>
+  </div>
+
+  <div class="metric-tile">
+    <span>Negative rate</span>
+    <strong><%= summary.fetch(:negative_rate) %>%</strong>
+  </div>
+
+  <div class="metric-tile split">
+    <span>Distribution</span>
+    <div class="distribution-bars" aria-label="Sentiment distribution">
+      <% total = [summary.fetch(:total), 1].max.to_f %>
+      <i class="bar negative" style="width: <%= (summary.fetch(:negative) / total * 100).round %>%"></i>
+      <i class="bar neutral" style="width: <%= (summary.fetch(:neutral) / total * 100).round %>%"></i>
+      <i class="bar positive" style="width: <%= (summary.fetch(:positive) / total * 100).round %>%"></i>
+    </div>
+  </div>
+</section>
+

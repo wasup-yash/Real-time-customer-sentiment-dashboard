@@ -1,0 +1,8 @@
+<article id="alert_<%= dom_id(review) %>" class="alert-item">
+  <div>
+    <strong><%= review.primary_emotion.titleize %></strong>
+    <p><%= truncate(review.body, length: 130) %></p>
+  </div>
+  <span><%= (review.score.to_f * 100).round %>%</span>
+</article>
+

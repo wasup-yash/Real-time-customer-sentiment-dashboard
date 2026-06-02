@@ -1,0 +1,25 @@
+<article id="<%= dom_id(review) %>" class="review-item sentiment-<%= review.sentiment %>">
+  <div class="review-main">
+    <div class="review-header">
+      <strong><%= review.author %></strong>
+      <span><%= review.source %></span>
+      <% if review.rating.present? %>
+        <span><%= review.rating %>/5</span>
+      <% end %>
+    </div>
+
+    <p><%= review.body %></p>
+
+    <div class="emotion-strip">
+      <% review.emotions.to_h.sort_by { |_emotion, value| -value.to_f }.first(4).each do |emotion, value| %>
+        <span><%= emotion.to_s.titleize %> <%= (value.to_f * 100).round %>%</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="sentiment-badge">
+    <span><%= review.sentiment.titleize %></span>
+    <strong><%= (review.score.to_f * 100).round %>%</strong>
+  </div>
+</article>
+
